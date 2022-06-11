@@ -1,0 +1,36 @@
+Composed Types
+As our data gets nested deeper, we’ll start to have typed objects that become unwieldy to write and read. Take the following type:
+/////////////////
+interface About {
+  general: {
+    id: number;
+    name: string;
+    version: {
+      versionNumber: number;
+    }
+  }
+}
+////////////////////////////////
+This type has two levels of nesting. This might work for a short program, but as our code expands and we need more features we’ll likely encounter two problems:
+
+As we add more data, this interface may become so nested it’s hard for ourselves and other developers to read.
+It’s likely that we may want just a nested part of this type somewhere. For instance, we may want just the version object type in our program, and it would be nice if we could use it without all the other type members in About.
+To solve this, TypeScript allows us to compose types. We can define multiple types and reference them inside other types. Here’s the type above, rewritten with individual types composed together:
+////////////////////////////////
+interface About {
+  general: General;
+}
+ 
+interface General {
+  id: number;
+  name: string;
+  version: Version;
+}
+ 
+interface Version {
+  versionNumber: number;
+}
+////////////////////////////////
+The resulting code is a little longer, but we addressed the problems with a big interface: we can now read our code easier with named types and we can reuse the smaller interfaces in other places in our code.
+
+Composing types together is an essential way to keep our code organized and flexible.
